@@ -1,36 +1,18 @@
 package main
 
 import (
-	"html/template"
-	"io"
-
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/gofiber/fiber/v2"
+	"github.com/pkg/errors"
+	"personal/health-app/service/views"
 )
 
-type Template struct {
-	tmpl *template.Template
-}
-
-func newTemplate() *Template {
-	return &Template{
-		tmpl: template.Must(template.ParseGlob("views/*.html")),
-	}
-}
-
-func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.tmpl.ExecuteTemplate(w, name, data)
-}
-
 func main() {
-	e := echo.New()
+	app := fiber.New()
+	app.Get("/", views.PageView)
 
-	e.Renderer = newTemplate()
-	e.Use(middleware.Logger())
+	err := app.Listen(":4040")
+	if err != nil {
+		println(errors.Wrapf(err, "failed to start server").Error())
+	}
 
-	e.GET("/", func(c echo.Context) error {
-		return c.Render(200, "index.html", "")
-	})
-
-	e.Logger.Fatal(e.Start(":42069"))
 }
