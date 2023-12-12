@@ -1,0 +1,28 @@
+package templates
+
+templ DishForm() {
+	<div class="card shadow-2xl bg-base-100">
+		<form class="card-body" hx-post="/add" hx-swap="outerHTML">
+			<div class="form-control">
+				<label class="label">
+					<span class="label-text">Dish</span>
+				</label>
+				<input name="dish" type="text" placeholder="dish" class="input input-bordered"/>
+			</div>
+			<div class="form-control">
+				<label class="label">
+					<span class="label-text"></span>
+				</label>
+				<select name="meal_level" class="select select-bordered">
+					<option disabled selected>Meal Level</option>
+					<option value="green">Green</option>
+					<option value="orange">Orange</option>
+					<option value="cheat">Cheat</option>
+				</select>
+			</div>
+			<div class="form-control mt-6">
+				<button class="btn btn-primary">Add</button>
+			</div>
+		</form>
+	</div>
+}
