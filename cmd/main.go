@@ -34,9 +34,9 @@ func main() {
 		dish := ctx.FormValue("dish")
 		dishLevel := ctx.FormValue("meal_level")
 		dishInput := model.MealDish{
-			Name:           dish,
-			Classification: strings.ToLower(dishLevel),
-			MealID:         "2",
+			Name:   dish,
+			Score:  strings.ToLower(dishLevel),
+			MealID: "2",
 		}
 		res := dbInstance.DB.Create(&dishInput)
 		if res.Error != nil {

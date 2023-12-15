@@ -1,3 +1,4 @@
+.PHONY: diff
 # atlas migrate
 migrate:
 	atlas schema apply \
@@ -7,7 +8,7 @@ migrate:
 
 # atlas diff
 diff:
-	atlas migrate diff change_meal_items \
+	atlas migrate diff $(NAME) \
 		  --dir "file://migrations" \
 		  --to file://schema.sql \
 		  --dev-url "docker://postgres/15/dev"

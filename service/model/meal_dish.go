@@ -1,7 +1,7 @@
 package model
 
 type MealDish struct {
-	Name           string
-	Classification string
-	MealID         string
+	Name   string
+	Score  string
+	MealID string
 }
