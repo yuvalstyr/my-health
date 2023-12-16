@@ -11,6 +11,16 @@ templ Page(dishList []model.MealDish) {
 			<link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css" rel="stylesheet" type="text/css"/>
 			<script src="https://cdn.tailwindcss.com"></script>
 			<title>my-health</title>
+			<script>
+            document.addEventListener("DOMContentLoaded", (event) => {
+                document.body.addEventListener('htmx:beforeSwap', function(evt) {
+                    if (evt.detail.xhr.status === 204) {
+                        // allow 204 responses to be swapped
+                        evt.detail.shouldSwap = true;
+                    }
+                });
+            })
+            </script>
 		</head>
 		<body>
 			<section class="section">

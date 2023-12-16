@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	fiberType "github.com/gofiber/fiber/v2"
 	"github.com/pkg/errors"
 	"personal/health-app/service/datebase"
@@ -30,12 +31,26 @@ func main() {
 		return views.ComponentsHandler(ctx, templates.Page(dishes))
 	})
 
+	app.Get("/dish/:id/edit", func(ctx *fiberType.Ctx) error {
+		var dish model.MealDish
+		id := ctx.Params("id")
+		res := dbInstance.DB.First(&dish, id)
+		if res.Error != nil {
+			ctx.Status(500)
+			return res.Error
+		}
+		ctx.Status(200)
+		str := fmt.Sprintf("%+v", dish)
+		fmt.Println(str)
+		return views.ComponentsHandler(ctx, templates.DishFormRow(dish))
+	})
+
 	app.Post("/add", func(ctx *fiberType.Ctx) error {
 		dish := ctx.FormValue("dish")
-		dishLevel := ctx.FormValue("meal_level")
+		dishScore := ctx.FormValue("meal_level")
 		dishInput := model.MealDish{
 			Name:   dish,
-			Score:  strings.ToLower(dishLevel),
+			Score:  strings.ToLower(dishScore),
 			MealID: "2",
 		}
 		res := dbInstance.DB.Create(&dishInput)
@@ -64,15 +79,35 @@ func main() {
 		if res.Error != nil {
 			return res.Error
 		}
-		ctx.Status(200)
+		ctx.Status(fiberType.StatusOK)
 		var dishes []model.MealDish
 		res = dbInstance.DB.Find(&dishes)
+		if res.Error != nil {
+			ctx.Status(fiberType.StatusInternalServerError)
+			return res.Error
+		}
+
+		ctx.Status(fiberType.StatusNoContent)
+		return nil
+	})
+
+	app.Put("/dish/:id", func(ctx *fiberType.Ctx) error {
+		id := ctx.Params("id")
+		dish := ctx.FormValue("dish")
+		dishLevel := ctx.FormValue("meal_level")
+		dishInput := model.MealDish{
+			Name:   dish,
+			Score:  strings.ToLower(dishLevel),
+			MealID: "2",
+		}
+		res := dbInstance.DB.Model(&model.MealDish{}).Where("id = ?", id).Updates(&dishInput)
 		if res.Error != nil {
 			ctx.Status(500)
 			return res.Error
 		}
+		ctx.Status(200)
 
-		return views.ComponentsHandler(ctx, templates.Page(dishes))
+		return views.ComponentsHandler(ctx, templates.Dish(dishInput))
 	})
 
 	err = app.Listen("localhost:4040")

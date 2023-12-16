@@ -3,7 +3,7 @@ CREATE TYPE "meal_score" AS ENUM ('green', 'orange', 'cheat');
 CREATE TYPE "chefs" AS ENUM ('me','ordered','outsourced');
 
 CREATE TABLE "meals" (
-    id SERIAL PRIMARY KEY,
+    "id" SERIAL PRIMARY KEY,
     "type" meal_type  NOT NULL,
     "chef" chefs NOT NULL DEFAULT 'me',
     "date" DATE NOT NULL
