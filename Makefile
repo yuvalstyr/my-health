@@ -1,8 +1,10 @@
 .PHONY: diff
+include .env
+
 # atlas migrate
 migrate:
 	atlas schema apply \
-          -u "postgresql://postgres:34AB5gA5636443FE4Egc3-cGE-4*DC-G@monorail.proxy.rlwy.net:26753/railway" \
+          -u ${DB_URL} \
           --to file://schema.sql \
           --dev-url "docker://postgres/15/dev"
 
@@ -16,6 +18,6 @@ diff:
 #atlas rollback
 rollback:
 	atlas schema rollback \
-		  -u "postgresql://postgres:34AB5gA5636443FE4Egc3-cGE-4*DC-G@monorail.proxy.rlwy.net:26753/railway" \
+		  -u ${DB_URL} \
 		  --to file://schema.sql \
 		  --dev-url "docker://postgres/15/dev"

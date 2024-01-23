@@ -2,18 +2,29 @@ package main
 
 import (
 	"fmt"
-	fiberType "github.com/gofiber/fiber/v2"
-	"github.com/pkg/errors"
+	"log"
+	"os"
 	"personal/health-app/service/datebase"
 	"personal/health-app/service/fiber"
 	"personal/health-app/service/model"
 	"personal/health-app/service/templates"
 	"personal/health-app/service/views"
 	"strings"
+
+	fiberType "github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
+	"github.com/pkg/errors"
 )
 
 func main() {
-	dbInstance, err := datebase.New("host=monorail.proxy.rlwy.net user=postgres password=34AB5gA5636443FE4Egc3-cGE-4*DC-G dbname=railway port=26753 sslmode=disable")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	dbURL := os.Getenv("DB_URL")
+
+	dbInstance, err := datebase.New(dbURL)
 	if err != nil {
 		println(errors.Wrapf(err, "failed to connect database").Error())
 		panic(err)
@@ -114,5 +125,4 @@ func main() {
 	if err != nil {
 		println(errors.Wrapf(err, "failed to start server").Error())
 	}
-
 }
