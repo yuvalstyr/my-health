@@ -1,12 +1,11 @@
-package fiber
+package fiberapp
 
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"gorm.io/gorm"
 )
 
-func New(db *gorm.DB) *fiber.App {
+func New() *fiber.App {
 	app := fiber.New(
 		fiber.Config{
 			AppName: "my-health",

@@ -2,47 +2,15 @@ package templates
 
 import "personal/health-app/service/model"
 
-templ DishFormRow(dish model.MealDish) {
+templ ActivityFormRow(activity model.Activity) {
 	<div class="card shadow-2xl bg-base-100" id="dish">
-		<form name="edit" class="card-body" hx-put={ "/dish/" + dish.ID } hx-swap="outerHTML" hx-target="closest #dish">
+		<form name="edit" class="card-body" hx-put={ "/dish/" + activity.ID } hx-swap="outerHTML" hx-target="closest #dish">
 			<div class="grid grid-cols-3">
 				<div>
 					<label class="label">
-						<span class="label-text">Dish</span>
+						<span class="label-text">Activity</span>
 					</label>
-					<input name="dish" type="text" placeholder="dish" value={ dish.Name } class="input input-bordered"/>
-				</div>
-				<div>
-					<label class="label">
-						<span class="label-text">Score</span>
-					</label>
-					<select name="meal_level" class="select select-bordered">
-						<option disabled>Meal Score</option>
-						<option
- 							if  dish.Score == "green" {
-								selected
-							}
- 							value="green"
-						>
-							Green
-						</option>
-						<option
- 							if dish.Score == "orange" {
-								selected
-							}
- 							value="orange"
-						>
-							Orange
-						</option>
-						<option
- 							if dish.Score == "cheat" {
-								selected
-							}
- 							value="cheat"
-						>
-							Cheat
-						</option>
-					</select>
+					<input name="type" type="text" placeholder="dish" value={ activity.Type } class="input input-bordered"/>
 				</div>
 				<div class="mt-6">
 					<button type="submit" class="btn btn-primary">Change</button>
@@ -52,7 +20,7 @@ templ DishFormRow(dish model.MealDish) {
 	</div>
 }
 
-templ DishForm() {
+templ ActivityForm() {
 	<div class="card shadow-2xl bg-base-100">
 		<form name="new" class="card-body" hx-post="/add" hx-swap="outerHTML">
 			<div class="form-control">

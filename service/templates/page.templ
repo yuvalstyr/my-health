@@ -2,7 +2,7 @@ package templates
 
 import "personal/health-app/service/model"
 
-templ Page(dishList []model.MealDish) {
+templ Page(dishList []model.MealDish, activityList []model.Activity) {
 	<html data-theme="dark">
 		<head>
 			<meta charset="UTF-8"/>
@@ -28,6 +28,7 @@ templ Page(dishList []model.MealDish) {
 					<div class="flex w-full">
 						@DishForm()
 						@DishList(dishList)
+						@ActivityList(activityList)
 					</div>
 				</div>
 			</section>
