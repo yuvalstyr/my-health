@@ -11,6 +11,22 @@ require (
 )
 
 require (
+	github.com/BurntSushi/toml v1.2.1 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/sergi/go-diff v1.1.0 // indirect
+	golang.org/x/exp/typeparams v0.0.0-20221212164502-fae10dda9338 // indirect
+	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/sync v0.4.0 // indirect
+	golang.org/x/telemetry v0.0.0-20231114163143-69313e640400 // indirect
+	golang.org/x/tools v0.14.1-0.20231114185516-c9d3e7de13fd // indirect
+	golang.org/x/tools/gopls v0.14.2 // indirect
+	golang.org/x/vuln v1.0.1 // indirect
+	honnef.co/go/tools v0.4.5 // indirect
+	mvdan.cc/gofumpt v0.4.0 // indirect
+	mvdan.cc/xurls/v2 v2.4.0 // indirect
+)
+
+require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
@@ -18,7 +34,7 @@ require (
 	github.com/jackc/pgx/v5 v5.4.3 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
+	github.com/joho/godotenv v1.5.1
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect

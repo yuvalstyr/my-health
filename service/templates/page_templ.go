@@ -86,6 +86,10 @@ func Page(dishList []model.MealDish, activityList []model.Activity) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		templ_7745c5c3_Err = ActivityForm().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></section></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

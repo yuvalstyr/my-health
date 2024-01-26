@@ -54,7 +54,7 @@ templ DishFormRow(dish model.MealDish) {
 
 templ DishForm() {
 	<div class="card shadow-2xl bg-base-100">
-		<form name="new" class="card-body" hx-post="/add" hx-swap="outerHTML">
+		<form name="new" class="card-body" hx-post="/dish/add" hx-swap="outerHTML">
 			<div class="form-control">
 				<label class="label">
 					<span class="label-text">Dish</span>
