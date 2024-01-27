@@ -1,4 +1,4 @@
-package templates
+package dishes
 
 import "personal/health-app/service/model"
 
@@ -14,13 +14,13 @@ templ DishList(dishes []model.MealDish) {
 }
 
 templ Dish(dish model.MealDish) {
-	<div class="dish card shadow bg-primary text-primary-content w-full" id="dish" >
+	<div class="dish card shadow bg-primary text-primary-content w-full" id="dish">
 		<div class="card-body">
 			<div class="grid grid-cols-2">
 				<h2 class="card-title">i ate:{ dish.Name }, and it was a { dish.Score } dish</h2>
 				<div class="join">
 					<button class="btn join-item" hx-delete={ "/dish/" + dish.ID }>Delete</button>
-					<button class="btn join-item" hx-get={"/dish/" + dish.ID + "/edit"} hx-target="closest .dish">Edit</button>
+					<button class="btn join-item" hx-get={ "/dish/" + dish.ID + "/edit" } hx-target="closest .dish">Edit</button>
 				</div>
 			</div>
 		</div>

@@ -11,6 +11,9 @@ import "io"
 import "bytes"
 
 import "personal/health-app/service/model"
+import "personal/health-app/service/views/dishes"
+import "personal/health-app/service/views/activities"
+import "personal/health-app/service/views/components"
 
 func Page(dishList []model.MealDish, activityList []model.Activity) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
@@ -74,19 +77,23 @@ func Page(dishList []model.MealDish, activityList []model.Activity) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = DishForm().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = dishes.DishForm().Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = DishList(dishList).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = dishes.DishList(dishList).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = ActivityList(activityList).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = activities.ActivityList(activityList).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = ActivityForm().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = activities.ActivityForm().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = components.Counter(2).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

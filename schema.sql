@@ -17,7 +17,7 @@ CREATE TABLE "meal_dishes" (
     FOREIGN KEY ("meal_id") REFERENCES "meals" ("id") ON DELETE CASCADE
 );
 
-CREATE TABLE "activities_type" (
+CREATE TABLE "activity_types" (
     "id" text PRIMARY KEY,
     "name" text NOT NULL,
     "date" DATE NOT NULL
@@ -28,5 +28,5 @@ CREATE TABLE "activities" (
   "date" DATE NOT NULL,
   "type_id" text NOT NULL,
   "count" integer NOT NULL,
-  FOREIGN KEY ("type_id") REFERENCES "activities_type" ("id") ON DELETE CASCADE
+  FOREIGN KEY ("type_id") REFERENCES "activity_types" ("id") ON DELETE CASCADE
 )

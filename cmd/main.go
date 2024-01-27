@@ -8,7 +8,11 @@ import (
 	"personal/health-app/service/model"
 	"personal/health-app/service/templates"
 	"personal/health-app/service/views"
+	"personal/health-app/service/views/activities"
+	"personal/health-app/service/views/dishes"
+	"strconv"
 	"strings"
+	"time"
 
 	fiber "github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -44,6 +48,11 @@ func main() {
 			ctx.Status(500)
 			return res.Error
 		}
+		var activityTypes []model.ActivityType
+		res = dbInstance.DB.Find(&activityTypes)
+		if res.Error != nil {
+			ctx.Status(fiber.StatusInternalServerError)
+		}
 		ctx.Status(200)
 		return views.ComponentsHandler(ctx, templates.Page(dishes, activities))
 	})
@@ -57,7 +66,7 @@ func main() {
 			return res.Error
 		}
 		ctx.Status(200)
-		return views.ComponentsHandler(ctx, templates.DishFormRow(dish))
+		return views.ComponentsHandler(ctx, dishes.DishFormRow(dish))
 	})
 
 	app.Post("/dish/add", func(ctx *fiber.Ctx) error {
@@ -74,18 +83,18 @@ func main() {
 			return res.Error
 		}
 		ctx.Status(200)
-		var dishes []model.MealDish
-		res = dbInstance.DB.Find(&dishes)
+		var dishesSlice []model.MealDish
+		res = dbInstance.DB.Find(&dishesSlice)
 		if res.Error != nil {
 			ctx.Status(500)
 			return res.Error
 		}
 
-		err := views.ComponentsHandler(ctx, templates.DishForm())
+		err := views.ComponentsHandler(ctx, dishes.DishForm())
 		if err != nil {
 			return err
 		}
-		return views.ComponentsHandler(ctx, templates.OOBDish(dishInput))
+		return views.ComponentsHandler(ctx, dishes.OOBDish(dishInput))
 	})
 
 	app.Delete("/dish/:id", func(ctx *fiber.Ctx) error {
@@ -125,7 +134,7 @@ func main() {
 			return res.Error
 		}
 		ctx.Status(fiber.StatusOK)
-		return views.ComponentsHandler(ctx, templates.Dish(dishInput))
+		return views.ComponentsHandler(ctx, dishes.Dish(dishInput))
 	})
 
 	app.Get("/activity/:id", func(ctx *fiber.Ctx) error {
@@ -138,6 +147,45 @@ func main() {
 		ctx.Status(200)
 		return nil
 	})
+
+	app.Post("/activity/add", func(ctx *fiber.Ctx) error {
+		activityType := ctx.FormValue("type")
+		count := ctx.FormValue("count")
+		countInt, err := strconv.Atoi(count)
+		if err != nil {
+			ctx.Status(fiber.StatusBadRequest)
+			return errors.Wrap(err, "failed to add activity")
+		}
+		input := model.Activity{
+			ID:    uuid.New().String(),
+			Date:  time.Now(),
+			Type:  activityType,
+			Count: countInt,
+		}
+		res := dbInstance.DB.Create(&input)
+		if res.Error != nil {
+			return res.Error
+		}
+		ctx.Status(200)
+		var activity model.Activity
+		res = dbInstance.DB.First(&activity)
+		if res.Error != nil {
+			ctx.Status(500)
+			return res.Error
+		}
+
+		var activityTypes []model.ActivityType
+		res = dbInstance.DB.Find(&activityTypes)
+		if res.Error != nil {
+			ctx.Status(fiber.StatusInternalServerError)
+		}
+		err = views.ComponentsHandler(ctx, activities.ActivityForm())
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+
 	err = app.Listen("localhost:4040")
 	if err != nil {
 		println(errors.Wrapf(err, "failed to start server").Error())
