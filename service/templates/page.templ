@@ -12,20 +12,22 @@ templ Page(dishList []model.MealDish, activityList []model.Activity) {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<script src="https://unpkg.com/htmx.org@1.9.5" type="text/javascript"></script>
 			<link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css" rel="stylesheet" type="text/css"/>
+			<script src="https://unpkg.com/htmx.org/dist/ext/debug.js"></script>
+			<script src="https://unpkg.com/htmx.org/dist/ext/loading-states.js"></script>
 			<script src="https://cdn.tailwindcss.com"></script>
+			<link rel="stylesheet" htype="text/css" ref="/styles/index.css"/>
 			<title>my-health</title>
 			<script>
             document.addEventListener("DOMContentLoaded", (event) => {
                 document.body.addEventListener('htmx:beforeSwap', function(evt) {
                     if (evt.detail.xhr.status === 204) {
-                        // allow 204 responses to be swapped
                         evt.detail.shouldSwap = true;
                     }
                 });
             })
             </script>
 		</head>
-		<body>
+		<body hx-ext="loading-states">
 			<section class="section">
 				<div class="hero min-h-screen bg-base-200">
 					<div class="flex w-full">
@@ -33,7 +35,7 @@ templ Page(dishList []model.MealDish, activityList []model.Activity) {
 						@dishes.DishList(dishList)
 						@activities.ActivityList(activityList)
 						@activities.ActivityForm()
-						@components.Counter(2)
+						@components.Counter("2")
 					</div>
 				</div>
 			</section>

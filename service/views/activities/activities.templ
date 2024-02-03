@@ -18,7 +18,7 @@ templ Activity(activity model.Activity) {
 	<div class="dish card shadow bg-primary text-primary-content w-full" id="dish">
 		<div class="card-body">
 			<div class="grid grid-cols-2">
-				<h2 class="card-title">i did { activity.Type } on { activity.Date.String() } { strconv.Itoa(activity.Count) } times</h2>
+				<h2 class="card-title">i did { activity.TypeID } on { activity.Date.String() } { strconv.Itoa(activity.Count) } times</h2>
 				<div class="join">
 					<button class="btn join-item" hx-delete={ "/activity/" + activity.ID }>Delete</button>
 					<button class="btn join-item" hx-get={ "/activity/" + activity.ID + "/edit" } hx-target="closest .activity">Edit</button>

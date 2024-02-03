@@ -1,21 +1,19 @@
 package components
 
-import "strconv"
-
-templ Counter(counterVal int) {
-	<div>
-		<div id="counter">{ strconv.Itoa(counterVal) }</div>
+templ Counter(counterVal string) {
+	<div hx-target="this" hx-swap="outerHTML" hx-ext="debug">
+		<input id="counter" value={ counterVal }/>
 		<button
- 			hx-target="#counter"
- 			hx-post="/decrease"
+ 			hx-post="/1/decrement"
  			class="btn bg-blue-700 hover:bg-blue-800 rounded-lg py-2.5 px-4 text-white"
+ 			data-loading-disable
 		>
 			-
 		</button>
 		<button
- 			hx-target="#counter"
- 			hx-post="/increase"
+ 			hx-post="/1/increment"
  			class="btn bg-blue-700 hover:bg-blue-800 rounded-lg py-2.5 px-4 text-white"
+ 			data-loading-disable
 		>
 			+
 		</button>

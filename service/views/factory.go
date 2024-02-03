@@ -2,13 +2,11 @@ package views
 
 import (
 	"github.com/a-h/templ"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/adaptor"
+	"github.com/labstack/echo/v4"
 )
 
 // ComponentsHandler is a Go function that handles a page view.
 // It takes a *fiber.Ctx parameter and returns an error.
-func ComponentsHandler(c *fiber.Ctx, components templ.Component) error {
-	httpHandler := templ.Handler(components)
-	return adaptor.HTTPHandler(httpHandler)(c)
+func Render(c echo.Context, component templ.Component) error {
+	return component.Render(c.Request().Context(), c.Response())
 }
