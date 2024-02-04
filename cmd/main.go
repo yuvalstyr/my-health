@@ -38,12 +38,17 @@ func main() {
 
 	app.GET("/", func(ctx echo.Context) error {
 		var dishes []model.MealDish
-		res := dbInstance.DB.Find(&dishes, "12")
+		// TODO: change this to be dynamic, need to create meals for dishes
+		res := dbInstance.DB.Find(&dishes)
 		if res.Error != nil {
 			return res.Error
 		}
 		var activities []model.Activity
-		res = dbInstance.DB.Find(&activities)
+		res = dbInstance.
+			DB.
+			// TODO: change this to be dynamic, maybe remove from / page
+			Where("activities.date = ?", "2024-02-02").
+			Find(&activities)
 		if res.Error != nil {
 			return res.Error
 		}

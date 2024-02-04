@@ -33,10 +33,12 @@ func (c *counterHandler) Decrement(ctx echo.Context) error {
 
 func (c *counterHandler) counter(ctx echo.Context, action string) error {
 	counterID := ctx.Param("id")
+	date := ctx.QueryParam("date")
+
 	var result model.Activity
 	res := c.DB.
 		Joins("JOIN activity_types ON activity_types.id = activities.type_id").
-		Where("activity_types.id = ?", counterID).
+		Where("activity_types.id = ? AND activities.date = ?", counterID, date).
 		First(&result)
 	if res.Error != nil {
 		return ctx.String(http.StatusBadRequest, res.Error.Error())

@@ -19,14 +19,14 @@ CREATE TABLE "meal_dishes" (
 
 CREATE TABLE "activity_types" (
     "id" text PRIMARY KEY,
-    "name" text NOT NULL,
-    "date" DATE NOT NULL
+    "name" text NOT NULL
 );
 
 CREATE TABLE "activities" (
-  "id" text PRIMARY KEY,
+  "id" text,
   "date" DATE NOT NULL,
   "type_id" text NOT NULL,
   "count" integer NOT NULL,
+  PRIMARY KEY ("id", "date"),
   FOREIGN KEY ("type_id") REFERENCES "activity_types" ("id") ON DELETE CASCADE
 )

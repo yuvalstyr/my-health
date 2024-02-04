@@ -1,29 +1,38 @@
 package components
 
-import "personal/health-app/service/model"
-import "strconv"
+import (
+	"personal/health-app/service/model"
+	"strconv"
+	"fmt"
+	"time"
+)
+
+func formatDate(date time.Time) string {
+	return date.Format("2006-01-02")
+}
+
+func getDivID(date time.Time, action string) string {
+	return fmt.Sprintf("%s-%s", action, formatDate(date))
+}
 
 templ Counter(activity model.Activity) {
-	<div id="counter" data-loading-states>
+	<div hx-target="this" id={ getDivID(activity.Date, "increment") } data-loading-states>
 		<input value={ strconv.Itoa(activity.Count) }/>
 		<button
- 			id="decrement"
- 			hx-post={ "/" + activity.ID + "/decrement" }
+ 			hx-post={ fmt.Sprintf("/%s/decrement?date=%s", activity.ID, formatDate(activity.Date)) }
  			class="btn bg-blue-700 hover:bg-blue-800 rounded-lg py-2.5 px-4 text-white"
- 			hx-target="#outcome"
- 			hx-disabled-elt="#increment"
+ 			hx-disabled-elt={ getDivID(activity.Date, "decrement") }
+ 			data-loading-disable
 		>
 			-
 		</button>
 		<button
- 			id="increment"
- 			hx-post={ "/" + activity.ID + "/increment" }
+ 			hx-post={ fmt.Sprintf("/%s/increment?date=%s", activity.ID, formatDate(activity.Date)) }
  			class="btn bg-blue-700 hover:bg-blue-800 rounded-lg py-2.5 px-4 text-white"
- 			hx-target="#counter"
+ 			hx-disabled-elt={ getDivID(activity.Date, "increment") }
  			data-loading-disable
 		>
 			+
 		</button>
-		<div id="outcome"></div>
 	</div>
 }
