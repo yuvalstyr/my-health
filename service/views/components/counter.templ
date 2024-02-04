@@ -7,29 +7,29 @@ import (
 	"time"
 )
 
-func formatDate(date time.Time) string {
+func FormatDate(date time.Time) string {
 	return date.Format("2006-01-02")
 }
 
-func getDivID(date time.Time, action string) string {
-	return fmt.Sprintf("%s-%s", action, formatDate(date))
+func GetDivID(date time.Time, action string) string {
+	return fmt.Sprintf("%s-%s", action, FormatDate(date))
 }
 
-templ Counter(activity model.Activity) {
-	<div hx-target="this" id={ getDivID(activity.Date, "increment") } data-loading-states>
-		<input value={ strconv.Itoa(activity.Count) }/>
+templ Counter(activity model.ActivityDetails) {
+	<div hx-target="this" id={ GetDivID(activity.Date, "increment") } data-loading-states>
+		<input value={ strconv.Itoa(activity.Value) }/>
 		<button
- 			hx-post={ fmt.Sprintf("/%s/decrement?date=%s", activity.ID, formatDate(activity.Date)) }
+ 			hx-post={ fmt.Sprintf("/%s/decrement?date=%s", activity.ID, FormatDate(activity.Date)) }
  			class="btn bg-blue-700 hover:bg-blue-800 rounded-lg py-2.5 px-4 text-white"
- 			hx-disabled-elt={ getDivID(activity.Date, "decrement") }
+ 			hx-disabled-elt={ GetDivID(activity.Date, "decrement") }
  			data-loading-disable
 		>
 			-
 		</button>
 		<button
- 			hx-post={ fmt.Sprintf("/%s/increment?date=%s", activity.ID, formatDate(activity.Date)) }
+ 			hx-post={ fmt.Sprintf("/%s/increment?date=%s", activity.ID, FormatDate(activity.Date)) }
  			class="btn bg-blue-700 hover:bg-blue-800 rounded-lg py-2.5 px-4 text-white"
- 			hx-disabled-elt={ getDivID(activity.Date, "increment") }
+ 			hx-disabled-elt={ GetDivID(activity.Date, "increment") }
  			data-loading-disable
 		>
 			+

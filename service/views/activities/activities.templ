@@ -3,12 +3,17 @@ package activities
 import "personal/health-app/service/model"
 import "personal/health-app/service/views/components"
 
-templ ActivityList(activities []model.Activity) {
+templ ActivityList(activities []model.ActivityDetails) {
 	<div class="w-full">
 		<h2 class="card-title">Activities</h2>
 		<div class="grid gap-2">
 			for _, activity  := range activities {
-				@components.Counter(activity)
+				if activity.ValueType == "count" {
+					@components.Counter(activity)
+				}
+				if activity.ValueType == "sum" {
+					@components.Sum(activity)
+				}
 			}
 		</div>
 	</div>
