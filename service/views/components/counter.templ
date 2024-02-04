@@ -1,21 +1,29 @@
 package components
 
-templ Counter(counterVal string) {
-	<div hx-target="this" hx-swap="outerHTML" hx-ext="debug">
-		<input id="counter" value={ counterVal }/>
+import "personal/health-app/service/model"
+import "strconv"
+
+templ Counter(activity model.Activity) {
+	<div id="counter" data-loading-states>
+		<input value={ strconv.Itoa(activity.Count) }/>
 		<button
- 			hx-post="/1/decrement"
+ 			id="decrement"
+ 			hx-post={ "/" + activity.ID + "/decrement" }
  			class="btn bg-blue-700 hover:bg-blue-800 rounded-lg py-2.5 px-4 text-white"
- 			data-loading-disable
+ 			hx-target="#outcome"
+ 			hx-disabled-elt="#increment"
 		>
 			-
 		</button>
 		<button
- 			hx-post="/1/increment"
+ 			id="increment"
+ 			hx-post={ "/" + activity.ID + "/increment" }
  			class="btn bg-blue-700 hover:bg-blue-800 rounded-lg py-2.5 px-4 text-white"
+ 			hx-target="#counter"
  			data-loading-disable
 		>
 			+
 		</button>
+		<div id="outcome"></div>
 	</div>
 }

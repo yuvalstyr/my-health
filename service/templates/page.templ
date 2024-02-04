@@ -1,9 +1,10 @@
 package templates
 
-import "personal/health-app/service/model"
-import "personal/health-app/service/views/dishes"
-import "personal/health-app/service/views/activities"
-import "personal/health-app/service/views/components"
+import (
+	"personal/health-app/service/model"
+	"personal/health-app/service/views/dishes"
+	"personal/health-app/service/views/activities"
+)
 
 templ Page(dishList []model.MealDish, activityList []model.Activity) {
 	<html data-theme="dark">
@@ -12,9 +13,8 @@ templ Page(dishList []model.MealDish, activityList []model.Activity) {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<script src="https://unpkg.com/htmx.org@1.9.5" type="text/javascript"></script>
 			<link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css" rel="stylesheet" type="text/css"/>
-			<script src="https://unpkg.com/htmx.org/dist/ext/debug.js"></script>
-			<script src="https://unpkg.com/htmx.org/dist/ext/loading-states.js"></script>
 			<script src="https://cdn.tailwindcss.com"></script>
+			<script src="https://unpkg.com/htmx.org/dist/ext/loading-states.js"></script>
 			<link rel="stylesheet" htype="text/css" ref="/styles/index.css"/>
 			<title>my-health</title>
 			<script>
@@ -22,6 +22,7 @@ templ Page(dishList []model.MealDish, activityList []model.Activity) {
                 document.body.addEventListener('htmx:beforeSwap', function(evt) {
                     if (evt.detail.xhr.status === 204) {
                         evt.detail.shouldSwap = true;
+                        evt.detail.isError = false;
                     }
                 });
             })
@@ -35,7 +36,6 @@ templ Page(dishList []model.MealDish, activityList []model.Activity) {
 						@dishes.DishList(dishList)
 						@activities.ActivityList(activityList)
 						@activities.ActivityForm()
-						@components.Counter("2")
 					</div>
 				</div>
 			</section>

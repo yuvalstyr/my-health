@@ -10,10 +10,11 @@ import "context"
 import "io"
 import "bytes"
 
-import "personal/health-app/service/model"
-import "personal/health-app/service/views/dishes"
-import "personal/health-app/service/views/activities"
-import "personal/health-app/service/views/components"
+import (
+	"personal/health-app/service/model"
+	"personal/health-app/service/views/activities"
+	"personal/health-app/service/views/dishes"
+)
 
 func Page(dishList []model.MealDish, activityList []model.Activity) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
@@ -37,7 +38,7 @@ func Page(dishList []model.MealDish, activityList []model.Activity) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</script><link href=\"https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css\" rel=\"stylesheet\" type=\"text/css\"><script src=\"https://unpkg.com/htmx.org/dist/ext/debug.js\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</script><link href=\"https://cdn.jsdelivr.net/npm/daisyui@3.7.7/dist/full.css\" rel=\"stylesheet\" type=\"text/css\"><script src=\"https://cdn.tailwindcss.com\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -55,21 +56,12 @@ func Page(dishList []model.MealDish, activityList []model.Activity) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</script><script src=\"https://cdn.tailwindcss.com\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var5 := ``
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</script><link rel=\"stylesheet\" htype=\"text/css\" ref=\"/styles/index.css\"><title>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var6 := `my-health`
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
+		templ_7745c5c3_Var5 := `my-health`
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -77,16 +69,17 @@ func Page(dishList []model.MealDish, activityList []model.Activity) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var7 := `
+		templ_7745c5c3_Var6 := `
             document.addEventListener("DOMContentLoaded", (event) => {
                 document.body.addEventListener('htmx:beforeSwap', function(evt) {
                     if (evt.detail.xhr.status === 204) {
                         evt.detail.shouldSwap = true;
+                        evt.detail.isError = false;
                     }
                 });
             })
             `
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -107,10 +100,6 @@ func Page(dishList []model.MealDish, activityList []model.Activity) templ.Compon
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = activities.ActivityForm().Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = components.Counter("2").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -1,29 +1,15 @@
 package activities
 
 import "personal/health-app/service/model"
-import "strconv"
+import "personal/health-app/service/views/components"
 
 templ ActivityList(activities []model.Activity) {
-	<div class="w-full" hx-target="closest .dish" hx-swap="outerHTML">
+	<div class="w-full">
 		<h2 class="card-title">Activities</h2>
-		<div class="grid gap-2" id="dishes">
+		<div class="grid gap-2">
 			for _, activity  := range activities {
-				@Activity(activity)
+				@components.Counter(activity)
 			}
-		</div>
-	</div>
-}
-
-templ Activity(activity model.Activity) {
-	<div class="dish card shadow bg-primary text-primary-content w-full" id="dish">
-		<div class="card-body">
-			<div class="grid grid-cols-2">
-				<h2 class="card-title">i did { activity.TypeID } on { activity.Date.String() } { strconv.Itoa(activity.Count) } times</h2>
-				<div class="join">
-					<button class="btn join-item" hx-delete={ "/activity/" + activity.ID }>Delete</button>
-					<button class="btn join-item" hx-get={ "/activity/" + activity.ID + "/edit" } hx-target="closest .activity">Edit</button>
-				</div>
-			</div>
 		</div>
 	</div>
 }

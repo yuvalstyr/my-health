@@ -30,7 +30,7 @@ func main() {
 	}
 
 	app := echo.New()
-	app.Static("../index.css", "assets")
+	app.Static("../index.css", "styles")
 
 	handlersInstance := handlers.NewHandlersFactory(dbInstance.DB)
 	app.POST(":id/increment", handlersInstance.Counter.Increment)
@@ -50,6 +50,7 @@ func main() {
 		var activityTypes []model.ActivityType
 		res = dbInstance.DB.Find(&activityTypes)
 		if res.Error != nil {
+			return res.Error
 		}
 
 		return views.Render(ctx, templates.Page(dishes, activities))

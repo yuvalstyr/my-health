@@ -5,7 +5,6 @@ import (
 	"personal/health-app/service/model"
 	"personal/health-app/service/views"
 	"personal/health-app/service/views/components"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -51,5 +50,5 @@ func (c *counterHandler) counter(ctx echo.Context, action string) error {
 	if res.Error != nil {
 		return ctx.String(http.StatusBadRequest, res.Error.Error())
 	}
-	return views.Render(ctx, components.Counter(strconv.Itoa(result.Count)))
+	return views.Render(ctx, components.Counter(result))
 }
