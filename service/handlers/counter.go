@@ -6,6 +6,7 @@ import (
 	"personal/health-app/service/model"
 	"personal/health-app/service/views"
 	"personal/health-app/service/views/components"
+	"strconv"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -19,6 +20,7 @@ type counterHandler struct {
 type counterHandlerInterface interface {
 	Increment(ctx echo.Context) error
 	Decrement(ctx echo.Context) error
+	Sum(ctx echo.Context) error
 }
 
 func newCounter(daoFactory dao.Factory) *counterHandler {
@@ -65,4 +67,34 @@ func (c *counterHandler) counter(ctx echo.Context, action string) error {
 		return ctx.String(http.StatusBadRequest, err.Error())
 	}
 	return views.Render(ctx, components.Counter(result))
+}
+
+func (c *counterHandler) Sum(ctx echo.Context) error {
+	sumID := ctx.Param("id")
+	date := ctx.QueryParam("date")
+	dateParsed, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		return errors.Wrap(err, "invalid date")
+	}
+	value := ctx.FormValue("sum")
+	valueParsed, err := strconv.Atoi(value)
+	if err != nil {
+		return errors.Wrap(err, "invalid value")
+	}
+	activities, err := c.dao.GetActivityDetails(sumID, date)
+	if err != nil {
+		return errors.Wrap(err, "failed to get activity details")
+	}
+	activity := &model.Activity{
+		ID:     sumID,
+		Date:   dateParsed,
+		TypeID: activities[0].TypeID,
+		Value:  valueParsed,
+	}
+	err = c.dao.UpdateActivity(activity)
+	if err != nil {
+		return errors.Wrap(err, "failed to save activity")
+	}
+	activities[0].Value = valueParsed
+	return views.Render(ctx, components.Sum(activities[0]))
 }

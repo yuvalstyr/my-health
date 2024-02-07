@@ -19,7 +19,7 @@ templ Counter(activity model.ActivityDetails) {
 	<div hx-target="this" id={ GetDivID(activity.Date, "increment") } data-loading-states>
 		<input value={ strconv.Itoa(activity.Value) }/>
 		<button
- 			hx-post={ fmt.Sprintf("/%s/decrement?date=%s", activity.ID, FormatDate(activity.Date)) }
+ 			hx-post={ fmt.Sprintf("/%s/decrement?date=%s", activity.TypeID, FormatDate(activity.Date)) }
  			class="btn bg-blue-700 hover:bg-blue-800 rounded-lg py-2.5 px-4 text-white"
  			hx-disabled-elt={ GetDivID(activity.Date, "decrement") }
  			data-loading-disable

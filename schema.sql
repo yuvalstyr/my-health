@@ -21,7 +21,7 @@ CREATE TABLE "meal_dishes" (
 CREATE TABLE "activity_types" (
     "id" text PRIMARY KEY,
     "name" text NOT NULL,
-    "value_type" value_type NOT NULL default 'sum'
+    "value_type" value_type NOT NULL default 'sum',
 );
 
 CREATE TABLE "activities" (
@@ -29,6 +29,7 @@ CREATE TABLE "activities" (
   "date" DATE NOT NULL,
   "type_id" text NOT NULL,
   "value" integer NOT NULL,
-  PRIMARY KEY ("id", "date"),
-  FOREIGN KEY ("type_id") REFERENCES "activity_types" ("id") ON DELETE CASCADE
-)
+  PRIMARY KEY ("id"),
+  FOREIGN KEY ("type_id") REFERENCES "activity_types" ("id") ON DELETE CASCADE,
+  UNIQUE (date,type_id)
+);

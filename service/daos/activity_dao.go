@@ -21,16 +21,17 @@ type ActivityDAOInterface interface {
 }
 
 func (a *ActivityDAO) GetActivityDetails(activityID string, date string) ([]model.ActivityDetails, error) {
+	conditions := make(map[string]interface{})
 	if activityID != "" {
-		activityID = "*"
+		conditions["activity_types.id"] = activityID
 	}
 	if date != "" {
-		date = "*"
+		conditions["activities.date"] = date
 	}
 	var activities []model.ActivityDetails
 	res := a.db.Table("activities").
 		Joins("JOIN activity_types ON activity_types.id = activities.type_id").
-		Where("activity_types.id = ? AND activities.date = ?", activityID, date).
+		Where(conditions).
 		Select("activities.*, activity_types.value_type as value_type, activity_types.name as name").
 		Find(&activities)
 
