@@ -2,17 +2,18 @@ package handlers
 
 import (
 	"net/http"
+	dao "personal/health-app/service/daos"
 	"personal/health-app/service/model"
 	"personal/health-app/service/views"
 	"personal/health-app/service/views/components"
 	"time"
 
 	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
+	"github.com/pkg/errors"
 )
 
 type counterHandler struct {
-	DB *gorm.DB
+	dao dao.ActivityDAOInterface
 }
 
 type counterHandlerInterface interface {
@@ -20,8 +21,8 @@ type counterHandlerInterface interface {
 	Decrement(ctx echo.Context) error
 }
 
-func newCounter(db *gorm.DB) *counterHandler {
-	return &counterHandler{DB: db}
+func newCounter(daoFactory dao.Factory) *counterHandler {
+	return &counterHandler{dao: daoFactory.ActivityDAO}
 }
 
 func (c *counterHandler) Increment(ctx echo.Context) error {
@@ -41,28 +42,27 @@ func (c *counterHandler) counter(ctx echo.Context, action string) error {
 	}
 
 	var result model.ActivityDetails
-	res := c.DB.
-		Table("activities").
-		Joins("JOIN activity_types ON activity_types.id = activities.type_id").
-		Where("activity_types.id = ? AND activities.date = ?", counterID, date).
-		Select("activities.*, activity_types.value_type as value_type, activity_types.name as name").
-		First(&result)
-	if res.Error != nil {
-		return ctx.String(http.StatusBadRequest, res.Error.Error())
+	activities, err := c.dao.GetActivityDetails(counterID, date)
+	if err != nil {
+		return errors.Wrap(err, "failed to getting activities details")
+	}
+	if len(activities) > 1 {
+		return errors.New("multiple activities found")
 	}
 	if action == "increment" {
 		result.Value += 1
 	} else {
 		result.Value -= 1
 	}
-	res = c.DB.Save(&model.Activity{
+	activity := &model.Activity{
 		ID:     counterID,
 		Date:   dateParsed,
-		TypeID: result.TypeID,
-		Value:  result.Value,
-	})
-	if res.Error != nil {
-		return ctx.String(http.StatusBadRequest, res.Error.Error())
+		TypeID: activities[0].TypeID,
+		Value:  activities[0].Value,
+	}
+	err = c.dao.UpdateActivity(activity)
+	if err != nil {
+		return ctx.String(http.StatusBadRequest, err.Error())
 	}
 	return views.Render(ctx, components.Counter(result))
 }

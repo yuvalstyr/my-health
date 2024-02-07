@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"personal/health-app/service/daos"
 	"personal/health-app/service/datebase"
 	"personal/health-app/service/handlers"
 	"personal/health-app/service/model"
@@ -32,11 +33,12 @@ func main() {
 		println(errors.Wrapf(err, "failed to connect database").Error())
 		panic(err)
 	}
+	daoFactory := daos.NewDAOs(dbInstance.DB)
 
 	app := echo.New()
 	app.Static("../index.css", "styles")
 
-	handlersInstance := handlers.NewHandlersFactory(dbInstance.DB)
+	handlersInstance := handlers.NewHandlersFactory(*daoFactory)
 	app.POST(":id/increment", handlersInstance.Counter.Increment)
 	app.POST(":id/decrement", handlersInstance.Counter.Decrement)
 	app.POST(":id/sum", func(ctx echo.Context) error {
@@ -51,27 +53,22 @@ func main() {
 		if err != nil {
 			return errors.Wrap(err, "invalid value")
 		}
-		var activity model.ActivityDetails
-		res := dbInstance.
-			DB.
-			Table("activities").
-			Joins("JOIN activity_types ON activity_types.id = activities.type_id").
-			Where("activity_types.id = ? AND activities.date = ?", sumID, date).
-			Scan(&activity)
-		if res.Error != nil {
-			return errors.Wrap(res.Error, "failed to find activity")
+		activities, err := daoFactory.ActivityDAO.GetActivityDetails(sumID, date)
+		if err != nil {
+			return errors.Wrap(err, "failed to get activity details")
 		}
-		res = dbInstance.DB.Save(&model.Activity{
+		activity := &model.Activity{
 			ID:     sumID,
 			Date:   dateParsed,
-			TypeID: activity.TypeID,
+			TypeID: activities[0].TypeID,
 			Value:  valueParsed,
-		})
-		if res.Error != nil {
-			return errors.Wrap(res.Error, "failed to save activity")
 		}
-		activity.Value = valueParsed
-		return views.Render(ctx, components.Sum(activity))
+		err = daoFactory.ActivityDAO.UpdateActivity(activity)
+		if err != nil {
+			return errors.Wrap(err, "failed to save activity")
+		}
+		activities[0].Value = valueParsed
+		return views.Render(ctx, components.Sum(activities[0]))
 	})
 
 	app.GET("/", func(ctx echo.Context) error {

@@ -1,13 +1,13 @@
 package handlers
 
-import "gorm.io/gorm"
+import dao "personal/health-app/service/daos"
 
 type Factory struct {
 	Counter counterHandlerInterface
 }
 
-func NewHandlersFactory(db *gorm.DB) Factory {
-	counter := newCounter(db)
+func NewHandlersFactory(daoFactory dao.Factory) Factory {
+	counter := newCounter(daoFactory)
 	return Factory{
 		Counter: counter,
 	}
