@@ -3,7 +3,7 @@ package meals
 import "personal/health-app/service/model"
 import "personal/health-app/service/views/dishes"
 
-templ Meals(meals []model.Meal,dishes []model.Dish) {
+templ Meals(meals []model.Meal,dishesSlice []model.MealDish) {
 	for _, meal := range meals {
 		<section>
 			<div tabindex="0" class="collapse border border-base-300 bg-base-200">
@@ -11,7 +11,7 @@ templ Meals(meals []model.Meal,dishes []model.Dish) {
 					{ meal.Type.String() }
 				</div>
 				<div class="collapse-content">
-					@dishes.DishList(dishes)
+					@dishes.DishList(dishesSlice)
 				</div>
 			</div>
 		</section>

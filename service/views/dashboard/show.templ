@@ -9,7 +9,7 @@ import (
 
 templ Show(dishList []model.MealDish, activities []model.ActivityDetails) {
 	@components.Layout() {
-		@meals.Meals(dishList)
+		@meals.Meals([]model.Meal{},dishList)
 		@dishes.DishForm()
 	}
 }

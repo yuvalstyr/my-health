@@ -6,10 +6,12 @@ import (
 
 type Factory struct {
 	ActivityDAO ActivityDAOInterface
+	DishDAO     DishDAOInterface
 }
 
 func NewDAOs(db *gorm.DB) *Factory {
 	return &Factory{
 		ActivityDAO: NewActivityDAO(db),
+		DishDAO:     NewDishDAO(db),
 	}
 }
