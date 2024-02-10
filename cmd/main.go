@@ -34,15 +34,15 @@ func main() {
 	app := echo.New()
 	app.Static("/", "assets")
 
-	handlers := handlers.NewHandlersFactory(*daoFactory)
-	app.POST(":id/increment", handlers.Counter.Increment)
-	app.POST(":id/decrement", handlers.Counter.Decrement)
-	app.POST(":id/sum", handlers.Counter.Sum)
+	handlersFactory := handlers.NewHandlersFactory(*daoFactory)
+	app.POST(":id/increment", handlersFactory.Counter.Increment)
+	app.POST(":id/decrement", handlersFactory.Counter.Decrement)
+	app.POST(":id/sum", handlersFactory.Counter.Sum)
 
-	app.POST("/dish/add", handlers.DishHandler.Create)
-	app.DELETE("/dish/:id", handlers.DishHandler.Delete)
-	app.PUT("/dish/:id", handlers.DishHandler.Update)
-	app.GET("/dish/:id/edit", handlers.DishHandler.Get)
+	app.POST("/dish/add", handlersFactory.DishHandler.Create)
+	app.DELETE("/dish/:id", handlersFactory.DishHandler.Delete)
+	app.PUT("/dish/:id", handlersFactory.DishHandler.Update)
+	app.GET("/dish/:id/edit", handlersFactory.DishHandler.Get)
 
 	app.GET("/", func(ctx echo.Context) error {
 		var dishes []model.MealDish
