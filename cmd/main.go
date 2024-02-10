@@ -52,6 +52,7 @@ func main() {
 			return errors.Wrap(err, "could not get activity details")
 		}
 		if len(activities) == 0 {
+			return errors.Wrap(err, "not activities found")
 		}
 		var activityTypes []model.ActivityType
 		res = dbInstance.DB.Find(&activityTypes)

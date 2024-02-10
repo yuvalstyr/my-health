@@ -14,6 +14,7 @@ import (
 	"personal/health-app/service/model"
 	"personal/health-app/service/views/components"
 	"personal/health-app/service/views/dishes"
+	"personal/health-app/service/views/meals"
 )
 
 func Show(dishList []model.MealDish, activities []model.ActivityDetails) templ.Component {
@@ -35,7 +36,7 @@ func Show(dishList []model.MealDish, activities []model.ActivityDetails) templ.C
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = dishes.DishList(dishList).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = meals.Meals(dishList).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

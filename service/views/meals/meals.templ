@@ -1,0 +1,19 @@
+package meals
+
+import "personal/health-app/service/model"
+import "personal/health-app/service/views/dishes"
+
+templ Meals(meals []model.Meal,dishes []model.Dish) {
+	for _, meal := range meals {
+		<section>
+			<div tabindex="0" class="collapse border border-base-300 bg-base-200">
+				<div class="collapse-title text-xl font-medium">
+					{ meal.Type.String() }
+				</div>
+				<div class="collapse-content">
+					@dishes.DishList(dishes)
+				</div>
+			</div>
+		</section>
+	}
+}

@@ -3,12 +3,13 @@ package dashboard
 import (
 	"personal/health-app/service/views/components"
 	"personal/health-app/service/views/dishes"
+	"personal/health-app/service/views/meals"
 	"personal/health-app/service/model"
 )
 
 templ Show(dishList []model.MealDish, activities []model.ActivityDetails) {
 	@components.Layout() {
-		@dishes.DishList(dishList)
+		@meals.Meals(dishList)
 		@dishes.DishForm()
 	}
 }
