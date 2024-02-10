@@ -25,8 +25,8 @@ templ Dish(dish model.MealDish) {
 		<td class="col-span-1 xl:col-span-2">{ dish.Score }</td>
 		<td class="col-span-2 text-right xl:col-span-1">
 			<div class="join grid grid-cols-2">
-				<button class="btn btn-outline btn-sm join-item grow" hx-delete={ "/dish/" + dish.ID }>🗑</button>
-				<button class="btn btn-outline btn-sm join-item grow" hx-get={ "/dish/" + dish.ID + "/edit" } hx-target="closest .dish">
+				<button class="btn btn-outline btn-info btn-sm join-item grow" hx-delete={ "/dish/" + dish.ID }>🗑</button>
+				<button class="btn btn-outline btn-info btn-sm join-item grow" hx-get={ "/dish/" + dish.ID + "/edit" } hx-target="closest .dish">
 					🖊️
 				</button>
 			</div>

@@ -86,7 +86,7 @@ func Dish(dish model.MealDish) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td><td class=\"col-span-2 text-right xl:col-span-1\"><div class=\"join grid grid-cols-2\"><button class=\"btn btn-outline btn-sm join-item grow\" hx-delete=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td><td class=\"col-span-2 text-right xl:col-span-1\"><div class=\"join grid grid-cols-2\"><button class=\"btn btn-outline btn-info btn-sm join-item grow\" hx-delete=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -103,7 +103,7 @@ func Dish(dish model.MealDish) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button> <button class=\"btn btn-outline btn-sm join-item grow\" hx-get=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button> <button class=\"btn btn-outline btn-info btn-sm join-item grow\" hx-get=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
