@@ -7,8 +7,8 @@ import (
 	"personal/health-app/service/datebase"
 	"personal/health-app/service/handlers"
 	"personal/health-app/service/model"
-	"personal/health-app/service/templates"
 	"personal/health-app/service/views"
+	"personal/health-app/service/views/dashboard"
 
 	"github.com/joho/godotenv"
 
@@ -32,7 +32,7 @@ func main() {
 	daoFactory := daos.NewDAOs(dbInstance.DB)
 
 	app := echo.New()
-	app.Static("../index.css", "styles")
+	app.Static("/", "assets")
 
 	handlersInstance := handlers.NewHandlersFactory(*daoFactory)
 	app.POST(":id/increment", handlersInstance.Counter.Increment)
@@ -51,13 +51,15 @@ func main() {
 		if err != nil {
 			return errors.Wrap(err, "could not get activity details")
 		}
+		if len(activities) == 0 {
+		}
 		var activityTypes []model.ActivityType
 		res = dbInstance.DB.Find(&activityTypes)
 		if res.Error != nil {
 			return res.Error
 		}
 
-		return views.Render(ctx, templates.Page(dishes, activities))
+		return views.Render(ctx, dashboard.Show(dishes, activities))
 	})
 
 	app.Start("localhost:4040")

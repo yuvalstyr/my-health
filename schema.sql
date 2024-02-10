@@ -1,6 +1,6 @@
 CREATE TYPE "meal_type" AS ENUM ('breakfast', 'lunch', 'dinner');
 CREATE TYPE "meal_score" AS ENUM ('green', 'orange', 'cheat');
-CREATE TYPE "chefs" AS ENUM ('me','ordered','outsourced');
+CREATE TYPE "chefs" AS ENUM ('me','ordered','outsourced','work');
 CREATE TYPE "value_type" AS ENUM ('sum','count');
 
 CREATE TABLE "meals" (

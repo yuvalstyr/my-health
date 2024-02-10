@@ -3,28 +3,35 @@ package dishes
 import "personal/health-app/service/model"
 
 templ DishList(dishes []model.MealDish) {
-	<div class="w-full" hx-target="closest .dish" hx-swap="outerHTML">
-		<h2 class="card-title">Dishes</h2>
-		<div class="grid gap-2" id="dishes">
-			for _, dish  := range dishes {
-				@Dish(dish)
-			}
+	<section class="card p-0 col-span-12 overflow-hidden bg-neutral xl:col-span-6">
+		<div class="card-body p-0 grow-0">
+			<h2 class="card-title p-4">Dishes</h2>
+			<div class="overflow-x-auto" id="dishes">
+				<table class="table table-zebra">
+					<tbody>
+						for _, dish  := range dishes {
+							@Dish(dish)
+						}
+					</tbody>
+				</table>
+			</div>
 		</div>
-	</div>
+	</section>
 }
 
 templ Dish(dish model.MealDish) {
-	<div class="dish card shadow bg-primary text-primary-content w-full" id="dish">
-		<div class="card-body">
-			<div class="grid grid-cols-2">
-				<h2 class="card-title">i ate:{ dish.Name }, and it was a { dish.Score } dish</h2>
-				<div class="join">
-					<button class="btn join-item" hx-delete={ "/dish/" + dish.ID }>Delete</button>
-					<button class="btn join-item" hx-get={ "/dish/" + dish.ID + "/edit" } hx-target="closest .dish">Edit</button>
-				</div>
+	<tr class="grid grid-cols-4 xl:grid-cols-5">
+		<td class="col-span-1 xl:col-span-2">{ dish.Name }</td>
+		<td class="col-span-1 xl:col-span-2">{ dish.Score }</td>
+		<td class="col-span-2 text-right xl:col-span-1">
+			<div class="join grid grid-cols-2">
+				<button class="btn btn-outline btn-sm join-item grow" hx-delete={ "/dish/" + dish.ID }>🗑</button>
+				<button class="btn btn-outline btn-sm join-item grow" hx-get={ "/dish/" + dish.ID + "/edit" } hx-target="closest .dish">
+					🖊️
+				</button>
 			</div>
-		</div>
-	</div>
+		</td>
+	</tr>
 }
 
 templ OOBDish(dish model.MealDish) {

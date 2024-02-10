@@ -158,7 +158,7 @@ func DishForm() templ.Component {
 			templ_7745c5c3_Var9 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"card shadow-2xl bg-base-100\"><form name=\"new\" class=\"card-body\" hx-post=\"/dish/add\" hx-swap=\"outerHTML\"><div class=\"form-control\"><label class=\"label\"><span class=\"label-text\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section class=\"card col-span-12 bg-base-100 shadow-2xl xl:col-span-4\"><form name=\"new\" class=\"card-body\" hx-post=\"/dish/add\" hx-swap=\"outerHTML\"><div class=\"form-control\"><label class=\"label\"><span class=\"label-text\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -203,7 +203,7 @@ func DishForm() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option></select></div><div class=\"form-control mt-6\"><button class=\"btn btn-primary\" data-loading-disable>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option></select></div><div class=\"form-control\"><button class=\"btn btn-primary w-fit\" data-loading-disable>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -212,7 +212,7 @@ func DishForm() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></div></form></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></div></form></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
