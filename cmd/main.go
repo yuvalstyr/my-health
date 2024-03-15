@@ -35,14 +35,7 @@ func main() {
 	app.Static("/", "assets")
 
 	handlersFactory := handlers.NewHandlersFactory(*daoFactory)
-	app.POST(":id/increment", handlersFactory.Counter.Increment)
-	app.POST(":id/decrement", handlersFactory.Counter.Decrement)
-	app.POST(":id/sum", handlersFactory.Counter.Sum)
-
-	app.POST("/dish/add", handlersFactory.DishHandler.Create)
-	app.DELETE("/dish/:id", handlersFactory.DishHandler.Delete)
-	app.PUT("/dish/:id", handlersFactory.DishHandler.Update)
-	app.GET("/dish/:id/edit", handlersFactory.DishHandler.Get)
+	handlers.InitRoutes(app, &handlersFactory)
 
 	app.GET("/", func(ctx echo.Context) error {
 		var dishes []model.MealDish
