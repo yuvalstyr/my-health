@@ -32,11 +32,11 @@ func main() {
 	daoFactory := daos.NewDAOs(dbInstance.DB)
 
 	app := echo.New()
-	app.Static("/", "assets")
 
 	handlersFactory := handlers.NewHandlersFactory(*daoFactory)
 	handlers.InitRoutes(app, &handlersFactory)
 
+	// TODO: temp route
 	app.GET("/", func(ctx echo.Context) error {
 		var dishes []model.MealDish
 		res := dbInstance.DB.Find(&dishes)

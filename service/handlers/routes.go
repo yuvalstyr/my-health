@@ -5,9 +5,14 @@ import (
 )
 
 func InitRoutes(app *echo.Echo, handlers *Factory) {
+	app.Static("/", "assets")
+
+	// counters
 	app.POST(":id/increment", handlers.Counter.Increment)
 	app.POST(":id/decrement", handlers.Counter.Decrement)
 	app.POST(":id/sum", handlers.Counter.Sum)
+
+	// forms
 	app.POST("/dish/add", handlers.DishHandler.Create)
 	app.DELETE("/dish/:id", handlers.DishHandler.Delete)
 	app.PUT("/dish/:id", handlers.DishHandler.Update)
