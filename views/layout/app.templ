@@ -1,0 +1,56 @@
+package layout
+
+templ App() {
+	<html data-theme="dracula">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="stylesheet" href="/public/styles.css"/>
+			<script src="https://unpkg.com/htmx.org@2.0.2"></script>
+			<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+			<title>my-health</title>
+			<script>
+            document.addEventListener("DOMContentLoaded", (event) => {
+                document.body.addEventListener('htmx:beforeSwap', function(evt) {
+                    if (evt.detail.xhr.status === 204) {
+                        evt.detail.shouldSwap = true;
+                        evt.detail.isError = false;
+                    }
+                });
+            })
+            </script>
+		</head>
+		<body class="drawer min-h-screen bg-base-200 lg:drawer-open">
+			<main class="drawer-content">
+				<div class="grid grid-cols-12 grid-rows-[min-content] gap-y-12 p-4 lg:gap-x-12 lg:p-10">
+					<header class="col-span-12 flex items-center gap-2 lg:gap-4">
+						<div class="grow">
+							<h1 class="lg:text-2xl lg:font-light">Health Tracker</h1>
+						</div>
+						<div class="dropdown-end dropdown z-10">
+							<div tabindex="0" class="avatar btn btn-circle btn-ghost">
+								<div class="w-10 rounded-full">
+									<img src="https://picsum.photos/80/80?5"/>
+								</div>
+							</div>
+							<ul
+ 								tabindex="0"
+ 								class="menu dropdown-content mt-3 w-52 rounded-box bg-base-100 p-2 shadow-2xl"
+							>
+								<li>
+									<a>Dairy</a>
+								</li>
+								<li>
+									<a>Stats</a>
+								</li>
+							</ul>
+						</div>
+						<!-- /dropdown -->
+					</header>
+					{ children... }
+				</div>
+			</main>
+		</body>
+	</html>
+}
