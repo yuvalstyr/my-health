@@ -1,20 +1,26 @@
 package datebase
 
 import (
-	"gorm.io/driver/postgres"
+	"fmt"
+	"os"
+
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
+	sqlite "github.com/ytsruh/gorm-libsql"
 	"gorm.io/gorm"
 )
 
-type Instance struct {
-	DB *gorm.DB
-}
+func GetDB() (*gorm.DB, error) {
+	dbURL := os.Getenv("DB_URL")
+	dbToken := os.Getenv("TURSO_TOKEN")
+	fullURLKey := fmt.Sprintf("%s?authToken=%s", dbURL, dbToken)
 
-func New(config string) (*Instance, error) {
-	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
+	db, err := gorm.Open(sqlite.New(sqlite.Config{
+		DSN:        fullURLKey,
+		DriverName: "libsql",
+	}), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
-	return &Instance{
-		DB: db,
-	}, nil
+
+	return db, nil
 }

@@ -6,7 +6,10 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	datebase "personal/health-app/database"
 	"personal/health-app/handlers"
+
+	"github.com/pkg/errors"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
@@ -20,6 +23,15 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	_, err = datebase.GetDB()
+	if err != nil {
+		println(errors.Wrapf(err, "failed to connect database").Error())
+		panic(err)
+	}
+
+	log.Print("database connected")
+
 	router := chi.NewMux()
 
 	router.Handle("/*", http.StripPrefix("/", http.FileServer(http.FS(FS))))
