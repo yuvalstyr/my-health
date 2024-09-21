@@ -2,40 +2,62 @@ package counter
 
 import (
 	"personal/health-app/views/layout"
+	"personal/health-app/model"
 	"fmt"
 )
 
-var images = []string{"heart", "medal", "star", "star"}
+func getFigureID(id string) string {
+	return fmt.Sprintf("figure-%s", id)
+}
 
-templ CounterIndex() {
+templ CounterIndex(counters []*model.Counter) {
 	@layout.App() {
-		@CountersList()
+		@CountersList(counters)
 	}
 }
 
-templ CountersList() {
+templ CountersList(counters []*model.Counter) {
 	<div class="grid col-span-12 md:grid-cols-2 sm:grid-cols-1 gap-6">
-		for i := range images {
-			@Counter(fmt.Sprint(i))
+		for _,counter := range counters {
+			@Counter(*counter)
 		}
 	</div>
 }
 
-templ Counter(idCount string) {
-	<div class="card bg-neutral text-neutral-content w-96 shadow-xl">
-		<figure class="px-10 pt-10 flex">
-			<img class="text-4xl fa-solid text-success fa-burger"/>
-			<img class="text-4xl fa-solid fa-burger"/>
-			<img class="text-4xl fa-solid fa-burger"/>
-			<img class="text-4xl fa-solid fa-burger"/>
-			<img class="text-4xl fa-solid fa-burger"/>
-		</figure>
+templ Counter(counter model.Counter) {
+	<div id={ counter.ID } class="card bg-neutral text-neutral-content w-96 shadow-xl">
+		@VisualIndicator(counter.ID,2,counter.Value)
 		<div class="card-body items-center text-center">
 			<h2 class="text-xl font-semibold mb-4 text-gray-400">Cheat Meals</h2>
 			<div class="card-actions justify-end">
-				<button class="btn btn-sm btn-error">-</button>
-				<button class="btn btn-sm btn-success">+</button>
+				<button
+ 					class="btn btn-sm btn-error"
+ 					hx-put={ fmt.Sprintf("/counter/%s/decrement", counter.ID) }
+ 					hx-target={ "#" + getFigureID(counter.ID) }
+ 					hx-swap="outerHTML"
+				>
+					<img class="fa-solid fa-minus"/>
+				</button>
+				<button
+ 					class="btn btn-sm btn-success"
+ 					hx-put={ fmt.Sprintf("/counter/%s/increment", counter.ID) }
+ 					hx-target={ "#" + getFigureID(counter.ID) }
+ 					hx-swap="outerHTML"
+				>
+					<img class="fa-solid fa-plus"/>
+				</button>
 			</div>
 		</div>
 	</div>
+}
+
+templ VisualIndicator(id string, toTarget int, value int) {
+	<figure id={ getFigureID(id) } class="px-10 pt-10 flex">
+		for i:=0;i<value;i++ {
+			<img class="text-4xl fa-solid text-success fa-burger"/>
+		}
+		for i:=0;i<toTarget;i++ {
+			<img class="text-4xl fa-solid fa-burger"/>
+		}
+	</figure>
 }

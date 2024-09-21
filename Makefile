@@ -6,7 +6,7 @@ include .env
 # atlas migrate
 migrate:
 	atlas schema apply \
-          -u $(DB_URL) \
+          -u '$(DB_URL)?authToken=$(TURSO_TOKEN)'\
           --to file://schema.sql \
 					--dev-url "sqlite://dev?mode=memory"
 # atlas diff

@@ -1,6 +1,6 @@
 package model
 
-type ActivityType struct {
+type KPIType struct {
 	ID        string `gorm:"primaryKey"`
 	Name      string
 	ValueType string
