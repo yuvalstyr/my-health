@@ -1,0 +1,3 @@
+<div class=\"grid col-span-12 md:grid-cols-2 sm:grid-cols-1 gap-6\">
+</div>
+<div class=\"card bg-neutral text-neutral-content w-96 shadow-xl\"><figure class=\"px-10 pt-10 flex\"><img class=\"text-4xl fa-solid text-success fa-burger\"> <img class=\"text-4xl fa-solid fa-burger\"> <img class=\"text-4xl fa-solid fa-burger\"> <img class=\"text-4xl fa-solid fa-burger\"> <img class=\"text-4xl fa-solid fa-burger\"></figure><div class=\"card-body items-center text-center\"><h2 class=\"text-xl font-semibold mb-4 text-gray-400\">Cheat Meals</h2><div class=\"card-actions justify-end\"><button class=\"btn btn-sm btn-error\">-</button> <button class=\"btn btn-sm btn-success\">+</button></div></div></div>

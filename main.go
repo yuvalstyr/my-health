@@ -36,6 +36,7 @@ func main() {
 
 	router.Handle("/*", http.StripPrefix("/", http.FileServer(http.FS(FS))))
 	router.Handle("/", handlers.Make(handlers.HandleHomeIndex))
+	router.Handle("/counter", handlers.Make(handlers.HandleCountersIndex))
 
 	port := os.Getenv("HTTP_LISTEN_PORT")
 	slog.Info("app running on", "port", port)
