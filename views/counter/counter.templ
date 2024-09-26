@@ -24,6 +24,9 @@ templ CountersList(counters []*model.Counter) {
 	</div>
 }
 
+//TODO add target to each counter, and calc toTarget
+//TODO add the name for the counter form other table
+
 templ Counter(counter model.Counter) {
 	<div id={ counter.ID } class="card bg-neutral text-neutral-content w-96 shadow-xl">
 		@VisualIndicator(counter.ID,2,counter.Value)

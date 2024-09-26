@@ -9,6 +9,13 @@ migrate:
           -u '$(DB_URL)?authToken=$(TURSO_TOKEN)'\
           --to file://schema.sql \
 					--dev-url "sqlite://dev?mode=memory"
+
+migrate-local:
+	atlas schema apply \
+          -u "sqlite://my-health.db" \
+          --to file://schema.sql \
+					--dev-url "sqlite://dev?mode=memory"
+
 # atlas diff
 diff:
 	atlas migrate diff $(NAME) \

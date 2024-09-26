@@ -12,7 +12,18 @@ import (
 func GetDB() (*gorm.DB, error) {
 	dbURL := os.Getenv("DB_URL")
 	dbToken := os.Getenv("TURSO_TOKEN")
+	env := os.Getenv("ENV")
 	fullURLKey := fmt.Sprintf("%s?authToken=%s", dbURL, dbToken)
+	var db *gorm.DB
+	if env == "local" {
+		db, err := gorm.Open(sqlite.Open("my-health.db"), &gorm.Config{})
+		db = db.Debug()
+		if err != nil {
+			return nil, err
+		}
+
+		return db, nil
+	}
 
 	db, err := gorm.Open(sqlite.New(sqlite.Config{
 		DSN:        fullURLKey,

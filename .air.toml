@@ -5,7 +5,7 @@ tmp_dir = "tmp"
 [build]
 args_bin = []
 bin = "./tmp/main"
-cmd = "make css && go build -o ./tmp/main main.go"
+cmd = "tailwindcss -i views/css/app.css -o public/styles.css  && go build -o ./tmp/main main.go"
 delay = 0
 exclude_dir = ["assets", "tmp", "vendor","node_modules"]
 exclude_file = []

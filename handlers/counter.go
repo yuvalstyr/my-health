@@ -34,6 +34,10 @@ func (hc *CounterHandler) HandleCounterIncrementUpdate(w http.ResponseWriter, r 
 		return err
 	}
 	modelCounter.Value++
+	err = hc.daos.Counter.UpdateCounter(modelCounter)
+	if err != nil {
+		return err
+	}
 	return render(w, r, counter.VisualIndicator(id, 2, modelCounter.Value))
 }
 
