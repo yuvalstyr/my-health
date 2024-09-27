@@ -3,6 +3,7 @@ run: build
 
 .PHONY: diff
 include .env
+
 # atlas migrate
 migrate:
 	atlas schema apply \
@@ -18,6 +19,12 @@ migrate-local:
 
 # atlas diff
 diff:
+	atlas migrate diff $(NAME) \
+		  --dir "file://migrations" \
+		  --to file://schema.sql \
+			--dev-url "sqlite://dev?mode=memory"
+
+diff-local:
 	atlas migrate diff $(NAME) \
 		  --dir "file://migrations" \
 		  --to file://schema.sql \
