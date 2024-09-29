@@ -5,4 +5,5 @@ type Counter struct {
 	WeekNumber  string
 	kpi_type_id int
 	Value       int
+	Target      int
 }

@@ -14,6 +14,22 @@ type CounterHandler struct {
 	daos *daos.Factory
 }
 
+func getFieldsFromModel(counterModel *model.Counter) model.CounterIndicatorFields {
+	fields := model.CounterIndicatorFields{}
+	value := counterModel.Value
+	target := counterModel.Target
+	fields.Value = value
+	if value == target {
+		return fields
+	}
+	if value < target {
+		fields.LeftToTarget = target - value
+		return fields
+	}
+	fields.OverTarget = value - target
+	return fields
+}
+
 func NewCounterHandler(daos daos.Factory) *CounterHandler {
 	return &CounterHandler{daos: &daos}
 }
@@ -38,7 +54,8 @@ func (hc *CounterHandler) HandleCounterIncrementUpdate(w http.ResponseWriter, r 
 	if err != nil {
 		return err
 	}
-	return render(w, r, counter.VisualIndicator(id, 2, modelCounter.Value))
+	counterIndicator := counter.GetFieldsFromModel(modelCounter)
+	return render(w, r, counter.VisualIndicator(counterIndicator))
 }
 
 func (hc *CounterHandler) HandleCounterDecrementUpdate(w http.ResponseWriter, r *http.Request) error {
@@ -52,7 +69,9 @@ func (hc *CounterHandler) HandleCounterDecrementUpdate(w http.ResponseWriter, r 
 	if err != nil {
 		return err
 	}
-	return render(w, r, counter.VisualIndicator(id, 2, modelCounter.Value))
+
+	counterIndicator := counter.GetFieldsFromModel(modelCounter)
+	return render(w, r, counter.VisualIndicator(counterIndicator))
 }
 
 func (hc *CounterHandler) handleCounterUpdate(counter *model.Counter) error {

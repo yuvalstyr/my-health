@@ -6,21 +6,27 @@ import (
 	"fmt"
 )
 
-func GetFieldsFromModel(counterModel *model.Counter) model.CounterIndicatorFields {
-	fields := model.CounterIndicatorFields{Counter: *counterModel}
-	value := fields.Value
-	target := fields.Target
+type counterFields struct {
+	Value        int
+	OverTarget   int
+	LeftToTarget int
+}
+
+var fields counterFields
+
+func getFieldsFromModel(counterModel model.Counter) counterFields {
+	fields := counterFields{}
+	value := counterModel.Value
+	target := counterModel.Target
+	fields.Value = value
 	if value == target {
-		fields.UnderTarget = value
 		return fields
 	}
 	if value < target {
 		fields.LeftToTarget = target - value
-		fields.UnderTarget = value
 		return fields
 	}
 	fields.OverTarget = value - target
-	fields.UnderTarget = value - fields.OverTarget
 	return fields
 }
 
@@ -47,7 +53,7 @@ templ CountersList(counters []*model.Counter) {
 
 templ Counter(counter model.Counter) {
 	<div id={ counter.ID } class="card bg-neutral text-neutral-content w-96 shadow-xl">
-		@VisualIndicator(GetFieldsFromModel(&counter))
+		@VisualIndicator(getFieldsFromModel(counter))
 		<div class="card-body items-center text-center">
 			<h2 class="text-xl font-semibold mb-4 text-gray-400">Cheat Meals</h2>
 			<div class="card-actions justify-end">
@@ -72,16 +78,13 @@ templ Counter(counter model.Counter) {
 	</div>
 }
 
-templ VisualIndicator(counter model.CounterIndicatorFields) {
-	<figure id={ getFigureID(counter.ID) } class="px-10 pt-10 flex flex-wrap">
-		for i:=0;i<counter.UnderTarget;i++ {
+templ VisualIndicator(model model.Counter ) {
+	<figure id={ getFigureID(model.ID) } class="px-10 pt-10 flex">
+		for i:=0;i<fields.value;i++ {
 			<img class="text-4xl fa-solid text-success fa-burger"/>
 		}
-		for i:=0;i<counter.LeftToTarget;i++ {
+		for i:=0;i<fields.leftToTarget;i++ {
 			<img class="text-4xl fa-solid fa-burger"/>
-		}
-		for i:=0;i<counter.OverTarget;i++ {
-			<img class="text-4xl fa-solid text-error fa-burger"/>
 		}
 	</figure>
 }
