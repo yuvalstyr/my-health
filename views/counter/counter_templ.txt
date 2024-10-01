@@ -9,7 +9,10 @@
 \" hx-swap=\"outerHTML\"><img class=\"fa-solid fa-plus\"></button></div></div></div>
 <figure id=\"
 \" class=\"px-10 pt-10 flex flex-wrap\">
-<img class=\"text-4xl fa-solid text-success fa-burger\"> 
-<img class=\"text-4xl fa-solid fa-burger\"> 
-<img class=\"text-4xl fa-solid text-error fa-burger\">
+<img class=\"
+\"> 
+<img class=\"
+\"> 
+<img class=\"
+\">
 </figure>

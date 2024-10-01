@@ -6,6 +6,8 @@ import (
 	"fmt"
 )
 
+const baseIndicatorClass = "text-4xl fa-solid pl-1"
+
 func GetFieldsFromModel(counterModel *model.Counter) model.CounterIndicatorFields {
 	fields := model.CounterIndicatorFields{Counter: *counterModel}
 	value := fields.Value
@@ -75,13 +77,13 @@ templ Counter(counter model.Counter) {
 templ VisualIndicator(counter model.CounterIndicatorFields) {
 	<figure id={ getFigureID(counter.ID) } class="px-10 pt-10 flex flex-wrap">
 		for i:=0;i<counter.UnderTarget;i++ {
-			<img class="text-4xl fa-solid text-success fa-burger"/>
+			<img class={ fmt.Sprintf("%s text-success fa-%s", baseIndicatorClass, counter.Icon) }/>
 		}
 		for i:=0;i<counter.LeftToTarget;i++ {
-			<img class="text-4xl fa-solid fa-burger"/>
+			<img class={ fmt.Sprintf("%s fa-%s", baseIndicatorClass, counter.Icon) }/>
 		}
 		for i:=0;i<counter.OverTarget;i++ {
-			<img class="text-4xl fa-solid text-error fa-burger"/>
+			<img class={ fmt.Sprintf("%s text-error fa-%s", baseIndicatorClass, counter.Icon) }/>
 		}
 	</figure>
 }

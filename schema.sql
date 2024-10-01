@@ -25,6 +25,7 @@ CREATE TABLE "counters" (
     "kpi_type_id" TEXT NOT NULL,
     "value" INTEGER NOT NULL,
     "target" INTEGER NOT NULL DEFAULT 0,
+    "icon" TEXT NOT NULL DEFAULT 'burger',
     FOREIGN KEY ("kpi_type_id") REFERENCES "kpi_types" ("id") ON DELETE CASCADE,
     UNIQUE ("week_number", "kpi_type_id")
 );
