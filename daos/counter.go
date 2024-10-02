@@ -23,10 +23,14 @@ func (cd *Counter) GetCountersPerWeek(week int) ([]*model.Counter, error) {
 	if err != nil {
 		return nil, err
 	}
-	var counter []*model.Counter
-	return counter, db.
+
+	var counters []*model.Counter
+	return counters, db.
+		Table("counters").
+		Joins("left join kpi_types on kpi_types.id = counters.kpi_type_id").
+		Select("counters.*, kpi_types.name").
 		Where(&model.Counter{WeekNumber: fmt.Sprint(week)}).
-		Find(&counter).
+		Find(&counters).
 		Error
 }
 

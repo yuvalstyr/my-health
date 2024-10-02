@@ -42,6 +42,7 @@ func main() {
 	router.Handle("/counter", handlers.Make(countHendler.HandleCountersIndex))
 	router.Handle("/counter/{id}/increment", handlers.Make(countHendler.HandleCounterIncrementUpdate))
 	router.Handle("/counter/{id}/decrement", handlers.Make(countHendler.HandleCounterDecrementUpdate))
+	router.Handle("/food-tracker", handlers.Make(countHendler.HandleFoodTrackerIndex))
 
 	port := os.Getenv("HTTP_LISTEN_PORT")
 	slog.Info("app running on", "port", port)
