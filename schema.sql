@@ -16,6 +16,8 @@ CREATE TABLE "meal_dishes" (
 CREATE TABLE "kpi_types" (
     "id" TEXT PRIMARY KEY,
     "name" TEXT NOT NULL,
+    "target" INTEGER NOT NULL DEFAULT 0,
+    "icon" text NOT NULL DEFAULT 'burger',
     "value_type" TEXT CHECK("value_type" IN ('sum', 'count')) NOT NULL DEFAULT 'sum'
 );
 
@@ -24,8 +26,6 @@ CREATE TABLE "counters" (
     "week_number" INTEGER NOT NULL,
     "kpi_type_id" TEXT NOT NULL,
     "value" INTEGER NOT NULL,
-    "target" INTEGER NOT NULL DEFAULT 0,
-    "icon" TEXT NOT NULL DEFAULT 'burger',
     FOREIGN KEY ("kpi_type_id") REFERENCES "kpi_types" ("id") ON DELETE CASCADE,
     UNIQUE ("week_number", "kpi_type_id")
 );

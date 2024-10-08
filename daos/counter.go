@@ -9,7 +9,7 @@ import (
 type Counter struct{}
 
 type CounterDAOInterface interface {
-	GetCountersPerWeek(week int) ([]*model.Counter, error)
+	GetCountersPerWeek(week int) ([]*model.CounterEnriched, error)
 	UpdateCounter(counter *model.Counter) error
 	Get(id string) (*model.Counter, error)
 }
@@ -18,22 +18,25 @@ func NewCounterDAO() CounterDAOInterface {
 	return &Counter{}
 }
 
-func (cd *Counter) GetCountersPerWeek(week int) ([]*model.Counter, error) {
+func (cd *Counter) GetCountersPerWeek(week int) ([]*model.CounterEnriched, error) {
 	db, err := datebase.GetDB()
 	if err != nil {
 		return nil, err
 	}
 
-	var counters []*model.Counter
+	var counters []*model.CounterEnriched
 	return counters, db.
 		Table("counters").
-		Joins("left join kpi_types on kpi_types.id = counters.kpi_type_id").
-		Select("counters.*, kpi_types.name").
+		Joins("LEFT JOIN kpi_types ON counters.kpi_type_id = kpi_types.id").
+		Select("counters.*, kpi_types.*").
 		Where(&model.Counter{WeekNumber: fmt.Sprint(week)}).
 		Find(&counters).
 		Error
 }
 
+// UpdateCounter saves the given counter to the database. It assumes that the
+// counter is already created and that the id is set. If the id is not set, it
+// will panic.
 func (cd *Counter) UpdateCounter(counter *model.Counter) error {
 	db, err := datebase.GetDB()
 	if err != nil {

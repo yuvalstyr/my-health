@@ -1,11 +1,11 @@
-<div class=\"grid col-span-12 md:grid-cols-2 sm:grid-cols-1 gap-6\">
+<div class=\"grid  col-span-12 md:grid-cols-2 sm:grid-cols-1 gap-6\">
 </div>
 <div id=\"
 \" class=\"card bg-neutral text-neutral-content w-96 shadow-xl\">
 <div class=\"card-body items-center text-center\"><h2 class=\"text-xl font-semibold mb-4 text-gray-400\">
 </h2><div class=\"card-actions justify-end\"><button class=\"btn btn-sm btn-error\" hx-put=\"
 \" hx-target=\"
-\" hx-swap=\"outerHTML\"><img class=\"fa-solid fa-minus\"></button> <button class=\"btn btn-sm btn-success\" hx-put=\"
+\" hx-swap=\"outerHTML\"><img class=\"fa-solid fa-minus\" src=\"\"></button> <button class=\"btn btn-sm btn-success\" hx-put=\"
 \" hx-target=\"
 \" hx-swap=\"outerHTML\"><img class=\"fa-solid fa-plus\"></button></div></div></div>
 <figure id=\"

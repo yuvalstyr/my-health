@@ -60,19 +60,3 @@ func (hc *CounterHandler) HandleCounterDecrementUpdate(w http.ResponseWriter, r 
 func (hc *CounterHandler) handleCounterUpdate(counter *model.Counter) error {
 	return hc.daos.Counter.UpdateCounter(counter)
 }
-
-func getFieldsFromModel(counterModel *model.Counter) model.CounterIndicatorFields {
-	fields := model.CounterIndicatorFields{}
-	value := counterModel.Value
-	target := counterModel.Target
-	fields.Value = value
-	if value == target {
-		return fields
-	}
-	if value < target {
-		fields.LeftToTarget = target - value
-		return fields
-	}
-	fields.OverTarget = value - target
-	return fields
-}

@@ -1,7 +1,7 @@
 package model
 
 type CounterIndicatorFields struct {
-	Counter
+	CounterEnriched
 	UnderTarget  int
 	OverTarget   int
 	LeftToTarget int
