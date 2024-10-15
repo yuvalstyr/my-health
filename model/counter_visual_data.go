@@ -1,7 +1,8 @@
 package model
 
-type CounterIndicatorFields struct {
-	CounterEnriched
+type CounterVisualData struct {
+	CounterID    string
+	Target       int
 	UnderTarget  int
 	OverTarget   int
 	LeftToTarget int

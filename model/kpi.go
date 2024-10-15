@@ -1,6 +1,6 @@
 package model
 
-type KPIType struct {
+type KPI struct {
 	ID        string `gorm:"primaryKey"`
 	Name      string
 	Icon      string

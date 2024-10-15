@@ -18,7 +18,7 @@ func NewCounterHandler(daos daos.Factory) *CounterHandler {
 }
 
 func (hc *CounterHandler) HandleCountersIndex(w http.ResponseWriter, r *http.Request) error {
-	counters, err := hc.daos.Counter.GetCountersPerWeek(2)
+	counters, err := hc.daos.Counter.GetCountersPerWeek(40)
 	if err != nil {
 		return err
 	}
@@ -32,13 +32,13 @@ func (hc *CounterHandler) HandleCounterIncrementUpdate(w http.ResponseWriter, r 
 	if err != nil {
 		return err
 	}
-	modelCounter.Value++
+	modelCounter.Weekly.Value++
 	err = hc.daos.Counter.UpdateCounter(modelCounter)
 	if err != nil {
 		return err
 	}
-	counterIndicator := counter.GetNumericFieldsFromModel(modelCounter)
-	return render(w, r, counter.VisualIndicator(counterIndicator))
+	counterIndicator := counter.GetCounterVisualData(modelCounter)
+	return render(w, r, counter.VisualIndicator(counterIndicator, modelCounter.Kpi.Icon))
 }
 
 func (hc *CounterHandler) HandleCounterDecrementUpdate(w http.ResponseWriter, r *http.Request) error {
@@ -47,14 +47,14 @@ func (hc *CounterHandler) HandleCounterDecrementUpdate(w http.ResponseWriter, r 
 	if err != nil {
 		return err
 	}
-	modelCounter.Value--
+	modelCounter.Weekly.Value--
 	err = hc.handleCounterUpdate(modelCounter)
 	if err != nil {
 		return err
 	}
 
-	counterIndicator := counter.GetNumericFieldsFromModel(modelCounter)
-	return render(w, r, counter.VisualIndicator(counterIndicator))
+	counterIndicator := counter.GetCounterVisualData(modelCounter)
+	return render(w, r, counter.VisualIndicator(counterIndicator, modelCounter.Kpi.Icon))
 }
 
 func (hc *CounterHandler) handleCounterUpdate(counter *model.Counter) error {

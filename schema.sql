@@ -13,7 +13,7 @@ CREATE TABLE "meal_dishes" (
     FOREIGN KEY ("meal_id") REFERENCES "meals" ("id") ON DELETE CASCADE
 );
 
-CREATE TABLE "kpi_types" (
+CREATE TABLE "kpis" (
     "id" TEXT PRIMARY KEY,
     "name" TEXT NOT NULL,
     "target" INTEGER NOT NULL DEFAULT 0,
@@ -21,7 +21,7 @@ CREATE TABLE "kpi_types" (
     "value_type" TEXT CHECK("value_type" IN ('sum', 'count')) NOT NULL DEFAULT 'sum'
 );
 
-CREATE TABLE "counters" (
+CREATE TABLE "weekly_kpis" (
     "id" TEXT PRIMARY KEY,
     "week_number" INTEGER NOT NULL,
     "kpi_type_id" TEXT NOT NULL,

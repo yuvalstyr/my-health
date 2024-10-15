@@ -1,68 +1,90 @@
 package counter
 
 import (
-"fmt"
-"personal/health-app/model"
-"personal/health-app/views/layout"
+	"fmt"
+	"personal/health-app/model"
+	"personal/health-app/views/layout"
 )
 
 const baseIndicatorClass = "text-4xl fa-solid pl-1"
 
-templ CounterIndex(counters []*model.CounterEnriched) {
-@layout.App() {
-@CountersList(counters)
-}
-}
-
-templ CountersList(counters []*model.CounterEnriched) {
-<div class="grid  col-span-12 md:grid-cols-2 sm:grid-cols-1 gap-6">
-  for _,counter := range counters {
-  @Counter(*counter)
-  }
-</div>
+templ CounterIndex(counters []*model.Counter) {
+	@layout.App() {
+		@CountersList(counters)
+	}
 }
 
-templ Counter(counter model.CounterEnriched) {
-<div id={ counter.Counter.ID } class="card bg-neutral text-neutral-content w-96 shadow-xl">
-  @VisualIndicator(GetNumericFieldsFromModel(&counter))
-  <div class="card-body items-center text-center">
-    <h2 class="text-xl font-semibold mb-4 text-gray-400">{ counter.Name }</h2>
-    <div class="card-actions justify-end">
-      <button class="btn btn-sm btn-error" hx-put={ fmt.Sprintf("/counter/%s/decrement", counter.Counter.ID) }
-        hx-target={ "#" + getFigureID(counter.Counter.ID) } hx-swap="outerHTML">
-        <img class="fa-solid fa-minus" src="" />
-      </button>
-      <button class="btn btn-sm btn-success" hx-put={ fmt.Sprintf("/counter/%s/increment", counter.ID) } hx-target={ "#"
-        + getFigureID(counter.ID) } hx-swap="outerHTML">
-        <img class="fa-solid fa-plus" />
-      </button>
-    </div>
-  </div>
-</div>
+templ CountersList(counters []*model.Counter) {
+	<div class="grid  col-span-12 md:grid-cols-2 sm:grid-cols-1 gap-6">
+		for _,counter := range counters {
+			@Counter(*counter, GetCounterVisualData(counter))
+		}
+	</div>
 }
 
-templ VisualIndicator(counter model.CounterIndicatorFields, icon string) {
-<figure id={ getFigureID(counter.ID) } class="px-10 pt-10 flex flex-wrap">
-  for i:=0;i
-  <counter.UnderTarget;i++ { <img class={ fmt.Sprintf("%s text-success fa-%s", baseIndicatorClass, icon) } />
-  }
-  for i:=0;i
-  <counter.LeftToTarget;i++ { <img class={ fmt.Sprintf("%s fa-%s", baseIndicatorClass, icon) } />
-  }
-  for i:=0;i
-  <counter.OverTarget;i++ { <img class={ fmt.Sprintf("%s text-error fa-%s", baseIndicatorClass, icon) } />
-  }
-</figure>
+templ Counter(counter model.Counter, visualData model.CounterVisualData) {
+	<div id={ counter.Weekly.ID } class="card bg-neutral text-neutral-content w-96 shadow-xl">
+		<div class="card-body items-center text-center">
+			@VisualIndicator(GetCounterVisualData(&counter), counter.Kpi.Icon)
+			<h2 class="text-xl font-semibold mb-4 text-gray-400">{ counter.Kpi.Name }</h2>
+			<div class="card-actions justify-end">
+				<button
+					class="btn btn-sm btn-error"
+					hx-put={ fmt.Sprintf("/counter/%s/decrement", counter.Weekly.ID) }
+					hx-target={ "#" + getFigureID(counter.Weekly.ID) }
+					hx-swap="outerHTML"
+				>
+					<img class="fa-solid fa-minus" src=""/>
+				</button>
+				<button
+					class="btn btn-sm btn-success"
+					hx-put={ fmt.Sprintf("/counter/%s/increment", counter.Kpi.ID) }
+					hx-target={ "#" + getFigureID(counter.Kpi.ID) }
+					hx-swap="outerHTML"
+				>
+					<img class="fa-solid fa-plus"/>
+				</button>
+			</div>
+		</div>
+	</div>
 }
 
-func GetNumericFieldsFromModel(counterModel *model.Counter, target int) model.CounterIndicatorFields {
-counter := model.CounterEnriched{Counter: *counterModel}
-fields := model.CounterIndicatorFields{CounterEnriched: counter}
-value := fields.Value
-if value == target {
-fields.UnderTarget = value
-return fields
+templ VisualIndicator(visualData model.CounterVisualData, icon string) {
+	<figure id={ getFigureID(visualData.CounterID) } class="px-10 pt-10 flex flex-wrap">
+		for i:=0;i <visualData.UnderTarget;i++ {
+			<img
+				class={ fmt.Sprintf("%s text-success fa-%s", baseIndicatorClass, icon) }
+			/>
+		}
+		for i:=0;i <visualData.LeftToTarget;i++ {
+			<img class={ fmt.Sprintf("%s fa-%s", baseIndicatorClass, icon) }/>
+		}
+		for i:=0;i <visualData.OverTarget;i++ {
+			<img class={ fmt.Sprintf("%s text-error fa-%s", baseIndicatorClass, icon) }/>
+		}
+	</figure>
 }
-if value < target { fields.LeftToTarget=target - value fields.UnderTarget=value return fields } fields.OverTarget=value
-  - target fields.UnderTarget=value - fields.OverTarget return fields } func getFigureID(id string) string { return
-  fmt.Sprintf("figure-%s", id) }
+
+func GetCounterVisualData(counter *model.Counter) model.CounterVisualData {
+	weekly := counter.Weekly
+	kpi := counter.Kpi
+	target := kpi.Target
+	fields := model.CounterVisualData{CounterID: weekly.ID, Target: target}
+	value := weekly.Value
+	if value == target {
+		fields.UnderTarget = value
+		return fields
+	}
+	if value < target {
+		fields.LeftToTarget = target - value
+		fields.UnderTarget = value
+		return fields
+	}
+	fields.OverTarget = value - target
+	fields.UnderTarget = value - fields.OverTarget
+	return fields
+}
+
+func getFigureID(id string) string {
+	return fmt.Sprintf("figure-%s", id)
+}
